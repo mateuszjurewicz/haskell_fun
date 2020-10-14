@@ -1,3 +1,5 @@
+import Data.List (sortBy, sort)
+
 doubleMe x = x + x
 doubleUs x y = doubleMe x + doubleMe y
 doubleSmallNumber x = (if x > 10
@@ -117,3 +119,30 @@ describeList xs = "This list is " ++ case xs of [] -> "empty!"
                                                 [x] -> "single elem!"
                                                 [f, s] -> "made up of two elements!"
                                                 xs -> "longer!"
+sortReverse a b
+    | a > b = LT
+    | a < b = GT
+    | a == b = EQ
+sortNormal a b
+    | a > b = GT
+    | a < b = LT
+    | a == b = EQ
+
+gravityFlip :: Char -> [Int] -> [Int]
+gravityFlip d xs = 
+      if d == 'R' 
+         then sortBy sortNormal xs
+         else sortBy sortReverse xs
+
+maximum' :: (Ord a) => [a] -> a
+maximum' [] = error "empty list has no maximum"
+maximum' [x] = x
+maximum' (x:xs)
+    | x > maxTail = x
+    | otherwise = maxTail
+    where maxTail = maximum' xs
+
+maxMaximum :: (Ord a) => [a] -> a
+maxMaximum [] = error "Empty list has unclear max"
+maxMaximum [x] = x
+maxMaximum (x:xs) = max x (maxMaximum xs)
